@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bencarlisle.audibledistance">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:required="true" android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:required="true" android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:required="true" android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:required="true" android:name="android.permission.INTERNET"/>
+    <uses-permission android:required="true" android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -14,12 +18,12 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OmitActivity" />
-        <activity android:name=".RecordActivity" />
+        <activity android:name=".ResultsActivity" />
+        <service android:name=".WifiDirectService" />
+        <service android:name=".HotspotService" />
     </application>
 
 </manifest>
