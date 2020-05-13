@@ -11,18 +11,14 @@ public class HotspotListener extends WifiManager.LocalOnlyHotspotCallback {
 
     private final static int OMIT_LENGTH = 5;
     private WifiManager.LocalOnlyHotspotReservation reservation;
-    public HotspotListener() {
-        Log.e("CReated", "HOTSTPO");
-    }
 
     @Override
     public void onStarted(WifiManager.LocalOnlyHotspotReservation reservation) {
-//        super.onStarted(reservation);
-        Log.e("DDSD", " " + (5 / 0));
+        super.onStarted(reservation);
         Log.e("HOTSPOT LISTENER", "Wifi Hotspot is now on");
         reservation.close();
         this.reservation = reservation;
-//        new Thread(this::timerKill).start();
+        new Thread(this::timerKill).start();
     }
 
     WifiManager.LocalOnlyHotspotReservation getReservation() {
@@ -30,7 +26,6 @@ public class HotspotListener extends WifiManager.LocalOnlyHotspotCallback {
     }
 
     private void timerKill() {
-        Log.e("DDSD", " " + (5 / 0));
         Log.e("AM", "START KILLING TIMER");
         try {
             Thread.sleep(OMIT_LENGTH *  1000);
@@ -44,15 +39,13 @@ public class HotspotListener extends WifiManager.LocalOnlyHotspotCallback {
 
     @Override
     public void onStopped() {
-//        super.onStopped();
-        Log.e("DDSD", " " + (5 / 0));
+        super.onStopped();
         Log.e("HOTSPOT LISTENER", "Stopped");
     }
 
     @Override
     public void onFailed(int reason) {
-//        super.onFailed(reason);
-        Log.e("DDSD", " " + (5 / 0));
+        super.onFailed(reason);
         Log.e("HOTSPOT LISTENER", "Failed");
     }
 }

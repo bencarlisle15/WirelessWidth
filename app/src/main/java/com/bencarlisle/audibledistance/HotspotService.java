@@ -40,24 +40,21 @@ public class HotspotService extends TracerService {
     }
 
     void findContacts() {
-//        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-//        assert wifiManager != null;
-//        List<ScanResult> scanResults = wifiManager.getScanResults();
-//        Log.e("HOTSPOT SERVICE", "Found " + scanResults.size() + " results");
-//        for (ScanResult scanResult: scanResults) {
-//            parseResult(scanResult);
-//        }
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        assert wifiManager != null;
+        List<ScanResult> scanResults = wifiManager.getScanResults();
+        Log.e("HOTSPOT SERVICE", "Found " + scanResults.size() + " results");
+        for (ScanResult scanResult: scanResults) {
+            parseResult(scanResult);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     void omit() {
-//        Log.e("START", "OMIT");
+        Log.e("START", "OMIT");
         WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-    wifiManager.start
-        //        wifiManager.ap
-//        assert wifiManager != null;
-//        HotspotListener hotspotListener = new HotspotListener();
-//        wifiManager.startLocalOnlyHotspot(hotspotListener, new Handler());
-////        turnOnHotspot();
+        assert wifiManager != null;
+        HotspotListener hotspotListener = new HotspotListener();
+        wifiManager.startLocalOnlyHotspot(hotspotListener, null);
     }
 }

@@ -1,8 +1,10 @@
 package com.bencarlisle.audibledistance;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +13,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class ResultsActivity extends Activity {
 
-    private static final int SCAN_FREQUENCY = 1000;
+    private static final int SCAN_FREQUENCY = 10;
     private Class finderService;
     private static final int UPDATE_FREQUENCY = 5;
 
@@ -24,6 +28,11 @@ public class ResultsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encounters);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String resultsText = "Location Permission is required";
+            ((TextView) findViewById(R.id.main_text)).setText(resultsText);
+            return;
+        }
         Intent intent = getIntent();
         new EncounterDB(this).deleteAllEntries();
         this.finderService = (Class) Objects.requireNonNull(intent.getExtras()).get("finderService");

@@ -3,12 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/buttons"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Detecting Automatically" />
+        android:onClick="hotspotMode"
+        android:id="@+id/hotspot"
+        android:text="Hotspot Mode" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:onClick="wifiDirectMode"
+        android:layout_below="@id/hotspot"
+        android:id="@+id/wifidirect"
+        android:text="WifiDirect Mode" />
 
 </RelativeLayout>
