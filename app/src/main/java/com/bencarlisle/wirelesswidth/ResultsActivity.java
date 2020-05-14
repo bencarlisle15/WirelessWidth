@@ -17,12 +17,15 @@ import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 public class ResultsActivity extends Activity {
 
-    private static final int SCAN_FREQUENCY = 10;
     private Class finderService;
-    private static final int UPDATE_FREQUENCY = 5;
+    private static final int MIN_SCAN_FREQUENCY = 10;
+    private static final int MAX_SCAN_FREQUENCY = 10;
+    private static final int MIN_UPDATE_FREQUENCY = 2;
+    private static final int MAX_UPDATE_FREQUENCY = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +71,13 @@ public class ResultsActivity extends Activity {
     }
 
     private void startServicePeriodically() {
+        Random random = new Random();
         while (true) {
             startService(0);
             startService(1);
             try {
-                Thread.sleep(SCAN_FREQUENCY * 1000);
+                int nextUpdate = random.nextInt( MAX_SCAN_FREQUENCY - MIN_SCAN_FREQUENCY) + MIN_SCAN_FREQUENCY;
+                Thread.sleep(nextUpdate * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -87,10 +92,12 @@ public class ResultsActivity extends Activity {
 
 
     private void addEncounterResultsPeriodically() {
+        Random random = new Random();
         while (true) {
             runOnUiThread(this::addEncounterResults);
             try {
-                Thread.sleep(UPDATE_FREQUENCY * 1000);
+                int nextUpdate = random.nextInt( MAX_UPDATE_FREQUENCY - MIN_UPDATE_FREQUENCY) + MIN_UPDATE_FREQUENCY;
+                Thread.sleep(nextUpdate * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
