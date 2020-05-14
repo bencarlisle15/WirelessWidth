@@ -1,7 +1,11 @@
 package com.bencarlisle.wirelesswidth;
 
 import android.net.wifi.WifiManager;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
+
+@RequiresApi(api = Build.VERSION_CODES.O)
 class HotspotListener extends WifiManager.LocalOnlyHotspotCallback {
 
     private final int EMIT_LENGTH;

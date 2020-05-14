@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -37,12 +38,14 @@ public abstract class TracerService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        String CHANNEL_ID = "tracer-service";
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Tracer Service Running", NotificationManager.IMPORTANCE_DEFAULT);
-        NotificationManager notificationManager = (NotificationManager) Objects.requireNonNull(getSystemService(Context.NOTIFICATION_SERVICE));
-        notificationManager.createNotificationChannel(channel);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle("").setContentText("").build();
-        startForeground(1, notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "tracer-service";
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Tracer Service Running", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = (NotificationManager) Objects.requireNonNull(getSystemService(Context.NOTIFICATION_SERVICE));
+            notificationManager.createNotificationChannel(channel);
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle("").setContentText("").build();
+            startForeground(1, notification);
+        }
         init();
     }
 

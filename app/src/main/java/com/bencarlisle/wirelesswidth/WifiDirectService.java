@@ -62,8 +62,9 @@ public class WifiDirectService extends TracerService implements WifiP2pManager.P
                 public void onFailure(int reason) {
                 }
             });
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (NoSuchMethodException ignored) {
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
         }
     }
 

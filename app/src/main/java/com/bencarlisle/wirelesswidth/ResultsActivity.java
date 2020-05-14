@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ public class ResultsActivity extends Activity {
         }
         switch (finderCode) {
             case 0:
-                if (getSystemService(Context.WIFI_SERVICE) == null) {
+                if (getApplicationContext().getSystemService(Context.WIFI_SERVICE) == null) {
                     mainText.setText(R.string.no_support);
                     return;
                 }
@@ -49,7 +50,7 @@ public class ResultsActivity extends Activity {
                 this.finderService = HotspotService.class;
                 break;
             case 1:
-                if (getSystemService(Context.WIFI_P2P_SERVICE) == null) {
+                if (getApplicationContext().getSystemService(Context.WIFI_P2P_SERVICE) == null) {
                     mainText.setText(R.string.no_support);
                     return;
                 }
@@ -57,7 +58,7 @@ public class ResultsActivity extends Activity {
                 this.finderService = WifiDirectService.class;
                 break;
             default:
-                if (getSystemService(Context.WIFI_AWARE_SERVICE) == null || android.os.Build.VERSION.SDK_INT < 28 ){
+                if (getApplicationContext().getSystemService(Context.WIFI_AWARE_SERVICE) == null || android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.O ){
                     mainText.setText(R.string.no_support);
                     return;
                 }
@@ -87,7 +88,11 @@ public class ResultsActivity extends Activity {
     private void startService(int methodType) {
         Intent intent = new Intent(this, finderService);
         intent.putExtra("methodCode", methodType);
-        startForegroundService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
     }
 
 

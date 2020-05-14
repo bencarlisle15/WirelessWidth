@@ -76,7 +76,7 @@ class EncounterDB extends SQLiteOpenHelper {
         return id;
     }
 
-    public String getIdString() {
+    String getIdString() {
         return "contact_tracer_" + getId();
     }
 }

@@ -35,7 +35,7 @@ public class HotspotService extends TracerService {
     }
 
     void findContacts() {
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         assert wifiManager != null;
         List<ScanResult> scanResults = wifiManager.getScanResults();
         Log.e("HotspotService", "Found " + scanResults.size() + " results");
@@ -46,18 +46,20 @@ public class HotspotService extends TracerService {
 
     boolean isHotspotOn() {
         try {
-            WifiManager wifimanager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            WifiManager wifimanager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             assert wifimanager != null;
             Method method = wifimanager.getClass().getDeclaredMethod("isWifiApEnabled");
             method.setAccessible(true);
             return (boolean) method.invoke(wifimanager);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            return false;
+        } catch (InvocationTargetException ignored) {
+        } catch (NoSuchMethodException ignored) {
+        } catch (IllegalAccessException ignored) {
         }
+        return false;
     }
 
     void changeHotspotState(boolean newState) {
-        WifiManager wifimanager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifimanager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         assert wifimanager != null;
         try {
             if(isHotspotOn()) {
@@ -65,8 +67,9 @@ public class HotspotService extends TracerService {
             }
             Method method = wifimanager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
             method.invoke(wifimanager, null, newState);
-        }
-        catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
+        } catch (IllegalAccessException ignored) {
+        } catch (NoSuchMethodException ignored) {
+        } catch (InvocationTargetException ignored) {
         }
     }
 
