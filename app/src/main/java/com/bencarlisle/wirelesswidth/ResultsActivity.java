@@ -1,11 +1,11 @@
-package com.bencarlisle.audibledistance;
+package com.bencarlisle.wirelesswidth;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,14 +28,41 @@ public class ResultsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encounters);
+        TextView mainText = findViewById(R.id.main_text);
+        Intent intent = getIntent();
+        int finderCode = Objects.requireNonNull(intent.getExtras()).getInt("finderCode");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             String resultsText = "Location Permission is required";
-            ((TextView) findViewById(R.id.main_text)).setText(resultsText);
+            mainText.setText(resultsText);
             return;
         }
-        Intent intent = getIntent();
+        switch (finderCode) {
+            case 0:
+                if (getSystemService(Context.WIFI_SERVICE) == null) {
+                    mainText.setText(R.string.no_support);
+                    return;
+                }
+                mainText.setText(R.string.hotspot_mode);
+                this.finderService = HotspotService.class;
+                break;
+            case 1:
+                if (getSystemService(Context.WIFI_P2P_SERVICE) == null) {
+                    mainText.setText(R.string.no_support);
+                    return;
+                }
+                mainText.setText(R.string.wifidirect_mode);
+                this.finderService = WifiDirectService.class;
+                break;
+            default:
+                if (getSystemService(Context.WIFI_AWARE_SERVICE) == null || android.os.Build.VERSION.SDK_INT < 28 ){
+                    mainText.setText(R.string.no_support);
+                    return;
+                }
+                mainText.setText(R.string.wifiaware_mode);
+                this.finderService = WifiAwareService.class;
+                break;
+        }
         new EncounterDB(this).deleteAllEntries();
-        this.finderService = (Class) Objects.requireNonNull(intent.getExtras()).get("finderService");
         new Thread(this::startServicePeriodically).start();
         new Thread(this::addEncounterResultsPeriodically).start();
     }
@@ -55,11 +82,7 @@ public class ResultsActivity extends Activity {
     private void startService(int methodType) {
         Intent intent = new Intent(this, finderService);
         intent.putExtra("methodCode", methodType);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
-        } else {
-            startService(intent);
-        }
+        startForegroundService(intent);
     }
 
 
@@ -78,7 +101,7 @@ public class ResultsActivity extends Activity {
     private void addEncounterResults() {
         EncounterDB encounterDB = new EncounterDB(this);
         ArrayList<Encounter> encounters = encounterDB.getAllEncounters();
-        Log.e("RESULTS ACTIVITY", "Updating encounter results " + encounters.size());
+        Log.e("ResultsActivity", "Updating encounter results " + encounters.size());
         LinearLayout encountersLayout = findViewById(R.id.encounters);
         encountersLayout.removeAllViews();
         for (Encounter encounter: encounters) {

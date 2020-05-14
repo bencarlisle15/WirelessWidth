@@ -1,4 +1,4 @@
-package com.bencarlisle.audibledistance;
+package com.bencarlisle.wirelesswidth;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -28,7 +28,7 @@ public class WifiDirectService extends TracerService implements WifiP2pManager.P
             return;
         }
         long id = Long.parseLong(Objects.requireNonNull(matcher.group(1)));
-        Log.e("HOTSPOT SERVICE", "Adding id: " + id);
+        Log.e("WifiDirectService", "Adding id: " + id);
         EncounterDB encounterDB = new EncounterDB(this);
         encounterDB.addToDatabase(id);
     }
@@ -43,6 +43,27 @@ public class WifiDirectService extends TracerService implements WifiP2pManager.P
     public void onPeersAvailable(WifiP2pDeviceList peers) {
         for (WifiP2pDevice peer: peers.getDeviceList()) {
             parseResult(peer);
+        }
+    }
+
+    void init() {
+        try {
+            WifiP2pManager manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+            assert manager != null;
+            WifiP2pManager.Channel channel = manager.initialize(this, getMainLooper(), null);
+            Method m = manager.getClass().getMethod("setDeviceName", channel.getClass(), String.class, WifiP2pManager.ActionListener.class);
+            EncounterDB encounterDB = new EncounterDB(this);
+            m.invoke(manager, channel, encounterDB.getIdString(), new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                }
+            });
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 
@@ -66,25 +87,5 @@ public class WifiDirectService extends TracerService implements WifiP2pManager.P
             public void onFailure(int reasonCode) {
             }
         });
-    }
-
-    void omit() {
-        try {
-            WifiP2pManager manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-            assert manager != null;
-            WifiP2pManager.Channel channel = manager.initialize(this, getMainLooper(), null);
-            Method m = manager.getClass().getMethod("setDeviceName", channel.getClass(), String.class, WifiP2pManager.ActionListener.class);
-            m.invoke(manager, channel, "contact_tracer_0123456789", new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-                }
-
-                @Override
-                public void onFailure(int reason) {
-                }
-            });
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
     }
 }

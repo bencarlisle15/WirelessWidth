@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">AudibleDistance</string>
+    <string name="app_name">WirelessWidth</string>
+    <string name="hotspot_mode">Hotspot Mode</string>
+    <string name="wifidirect_mode">WifiDirect Mode</string>
+    <string name="wifiaware_mode">WifiAware Mode</string>
+    <string name="no_support">Your Device Does Not Support This Mode</string>
 </resources>

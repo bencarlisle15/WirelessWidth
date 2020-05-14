@@ -1,13 +1,9 @@
-package com.bencarlisle.audibledistance;
+package com.bencarlisle.wirelesswidth;
 
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-@RequiresApi(api = Build.VERSION_CODES.O)
-public class HotspotListener extends WifiManager.LocalOnlyHotspotCallback {
+class HotspotListener extends WifiManager.LocalOnlyHotspotCallback {
 
     private final static int OMIT_LENGTH = 5;
     private WifiManager.LocalOnlyHotspotReservation reservation;
@@ -19,10 +15,6 @@ public class HotspotListener extends WifiManager.LocalOnlyHotspotCallback {
         reservation.close();
         this.reservation = reservation;
         new Thread(this::timerKill).start();
-    }
-
-    WifiManager.LocalOnlyHotspotReservation getReservation() {
-        return reservation;
     }
 
     private void timerKill() {

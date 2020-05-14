@@ -1,4 +1,4 @@
-package com.bencarlisle.audibledistance;
+package com.bencarlisle.wirelesswidth;
 
 import org.junit.Test;
 

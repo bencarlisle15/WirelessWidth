@@ -1,10 +1,10 @@
-package com.bencarlisle.audibledistance;
+package com.bencarlisle.wirelesswidth;
 
 import java.util.Calendar;
 
 class Encounter {
-    private String idString;
-    private String timestampString;
+    private final String idString;
+    private final String timestampString;
 
     private static String convertDateToString(Calendar calendar) {
         return (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DATE) +"/" + calendar.get(Calendar.YEAR);

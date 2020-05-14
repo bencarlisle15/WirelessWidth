@@ -11,16 +11,28 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:onClick="hotspotMode"
+        android:textAllCaps="false"
         android:id="@+id/hotspot"
-        android:text="Hotspot Mode" />
+        android:text="@string/hotspot_mode" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:onClick="wifiDirectMode"
+        android:textAllCaps="false"
         android:layout_below="@id/hotspot"
         android:id="@+id/wifidirect"
-        android:text="WifiDirect Mode" />
+        android:text="@string/wifidirect_mode" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:onClick="wifiAwareMode"
+        android:textAllCaps="false"
+        android:layout_below="@id/wifidirect"
+        android:id="@+id/wifiaware"
+        android:text="@string/wifiaware_mode" />
 
 </RelativeLayout>

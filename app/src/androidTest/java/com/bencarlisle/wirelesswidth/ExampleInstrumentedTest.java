@@ -1,4 +1,4 @@
-package com.bencarlisle.audibledistance;
+package com.bencarlisle.wirelesswidth;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.bencarlisle.audibledistance", appContext.getPackageName());
+        assertEquals("com.bencarlisle.wirelesswidth", appContext.getPackageName());
     }
 }
