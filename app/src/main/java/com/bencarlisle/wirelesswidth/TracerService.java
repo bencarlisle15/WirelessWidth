@@ -26,7 +26,7 @@ public abstract class TracerService extends IntentService {
 
     }
 
-    void omit() {
+    void emit() {
 
     }
 
@@ -51,7 +51,7 @@ public abstract class TracerService extends IntentService {
         assert intent != null;
         int methodType = Objects.requireNonNull(intent.getExtras()).getInt("methodCode");
         if (methodType == 1) {
-            omit();
+            emit();
         } else {
             findContacts();
         }
